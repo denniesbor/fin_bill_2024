@@ -4,7 +4,7 @@ import { AppContext } from "../contextAPI";
 import MarkerComponent from "./MarkerComponent";
 import NearestMarkerInfo from "./NearestMarkerInfo";
 
-const Map = () => {
+const Map = ({ onLoad }) => {
   const {
     mapInstance,
     setMapInstance,
@@ -49,8 +49,11 @@ const Map = () => {
       renderer.setMap(mapInstance);
       setDirectionsService(service);
       setDirectionsRenderer(renderer);
+      if (onLoad) {
+        onLoad();
+      }
     }
-  }, [mapInstance, directionsService, directionsRenderer]);
+  }, [mapInstance, directionsService, directionsRenderer, onLoad]);
 
   const getLocation = () => {
     if (navigator.geolocation) {
