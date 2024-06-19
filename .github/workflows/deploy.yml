@@ -42,7 +42,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }} # Add google maps api key from secrets
         working-directory: ./user-interface
 
       - name: Rename build output to docs
