@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import ReportPolicePhoto from "./components/ReportPolicePhoto";
 import Loading from "./components/Loading";
 const App = () => {
+  // Wait for the map to load before rendering the rest of the app
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   const handleMapLoad = () => {
