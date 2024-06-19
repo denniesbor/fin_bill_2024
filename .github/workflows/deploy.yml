@@ -1,8 +1,9 @@
+# Code to deploy the static content to GitHub Pages
 name: Deploy static content to GitHub Pages
 
 on:
   push:
-    branches: ["testing"]
+    branches: ["staging"]
   workflow_dispatch:
 
 permissions:
