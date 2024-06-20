@@ -1,29 +1,36 @@
-import React, { useState, useEffect } from "react";
-import ContextProvider from "./contextAPI";
-import Map from "./components/Map";
+import React, { useState } from "react";
+import { ContextProvider } from "./contextAPI";
 import Navbar from "./components/Navbar";
+import Map from "./components/Map";
 import ReportPolicePhoto from "./components/ReportPolicePhoto";
 import Loading from "./components/Loading";
-const App = () => {
-  // Wait for the map to load before rendering the rest of the app
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
+import Error from "./components/Error";
 
-  // Set isMapLoaded to true when the map has loaded
+const App = () => {
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleMapLoad = () => {
     setIsMapLoaded(true);
   };
 
+  const handleError = (message) => {
+    setError(message);
+  };
+
   return (
     <ContextProvider>
-      {isMapLoaded ? (
+      {error ? (
+        <Error message={error} />
+      ) : isMapLoaded ? (
         <>
           <Navbar />
-          <Map />
+          <Map onLoad={handleMapLoad} onError={handleError} />
           <ReportPolicePhoto />
         </>
       ) : (
         <>
-          <Map onLoad={handleMapLoad} />
+          <Map onLoad={handleMapLoad} onError={handleError} />
           <Loading />
         </>
       )}

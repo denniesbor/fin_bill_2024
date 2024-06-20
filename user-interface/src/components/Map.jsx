@@ -4,7 +4,7 @@ import { AppContext } from "../contextAPI";
 import MarkerComponent from "./MarkerComponent";
 import NearestMarkerInfo from "./NearestMarkerInfo";
 
-const Map = ({ onLoad }) => {
+const Map = ({ onLoad, onError }) => {
   const {
     mapInstance,
     setMapInstance,
@@ -50,18 +50,30 @@ const Map = ({ onLoad }) => {
       setDirectionsService(service);
       setDirectionsRenderer(renderer);
       if (onLoad) {
-        onLoad();
+        onLoad(); // This callback is called once the map is fully loaded
       }
     }
   }, [mapInstance, directionsService, directionsRenderer, onLoad]);
 
   const getLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ lat: latitude, lng: longitude });
-        initMap({ lat: latitude, lng: longitude });
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lng: longitude });
+          initMap({ lat: latitude, lng: longitude });
+        },
+        (err) => {
+          if (onError) {
+            onError("Location access denied. Please enable location services.");
+          }
+          console.error(err);
+        }
+      );
+    } else {
+      if (onError) {
+        onError("Geolocation is not supported by this browser.");
+      }
     }
   };
 
