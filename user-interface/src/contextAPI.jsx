@@ -8,7 +8,8 @@ export const ContextProvider = ({ children }) => {
   const [markers, setMarkers] = useState([]);
   const [mapInstance, setMapInstance] = useState(null);
   const [location, setLocation] = useState([]);
-   const [routeMode, setRouteMode] = useState(false);
+  const [routeMode, setRouteMode] = useState(false);
+  const [nearestMarkersInfo, setNearestMarkersInfo] = useState([]);
 
   return (
     <AppContext.Provider
@@ -25,6 +26,8 @@ export const ContextProvider = ({ children }) => {
         setLocation,
         routeMode,
         setRouteMode,
+        nearestMarkersInfo,
+        setNearestMarkersInfo,
       }}
     >
       {children}
