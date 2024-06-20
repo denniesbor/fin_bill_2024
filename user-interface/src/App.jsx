@@ -8,6 +8,7 @@ const App = () => {
   // Wait for the map to load before rendering the rest of the app
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
+  // Set isMapLoaded to true when the map has loaded
   const handleMapLoad = () => {
     setIsMapLoaded(true);
   };
