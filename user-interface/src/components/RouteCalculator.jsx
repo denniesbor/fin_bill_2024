@@ -37,14 +37,18 @@ const RouteCalculator = () => {
   const calculateRoute = (destination) => {
     const userLocation = new google.maps.LatLng(location.lat, location.lng);
 
-    console.log(`Calculating route from ${userLocation} to ${destination}`);
+    const [lat, lng] = destination.replace(/[()]/g, "").split(", ").map(Number);
+
+    const destLocation = new google.maps.LatLng(lat, lng);
+
+    console.log(`Calculating route from ${userLocation} to ${lat} ${lng}`);
 
     if (directionsService && directionsRenderer) {
       directionsService.route(
         {
           origin: userLocation,
-          destination: destination,
-          travelMode: google.maps.TravelMode.WALKING,
+          destination: destLocation,
+          travelMode: "WALKING",
         },
         (response, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
