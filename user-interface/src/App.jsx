@@ -38,6 +38,7 @@ const App = () => {
         <Error message={error} />
       ) : isMapLoaded ? (
         <>
+          <Navbar />
           <Map onLoad={handleMapLoad} onError={handleError} />
           <ReportPolicePhoto />
         </>
