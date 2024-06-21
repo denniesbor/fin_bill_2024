@@ -23,7 +23,7 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      path: "/fin_bill_2024/",
+      path: "/fin_bill_2024/", // Home page
       element: (
         <div className="p-4">
           <Navbar />
