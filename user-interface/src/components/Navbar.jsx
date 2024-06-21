@@ -37,13 +37,13 @@ const Navbar = () => {
       </h1>
       <div className="flex flex-row items-center space-x-4 mt-2">
         <Link
-          to="/fin_bill_2024"
+          to="/"
           className="bg-white text-blue-600 px-4 py-2 rounded"
         >
           Home
         </Link>
         <Link
-          to="/fin_bill_2024/edit-police"
+          to="/edit-police"
           className="bg-white text-blue-600 px-4 py-2 rounded"
         >
           Edit Police

@@ -3,7 +3,7 @@ name: Deploy static content to GitHub Pages
 
 on:
   push:
-    branches: ["staging"]
+    branches: ["gh_pages"]
   workflow_dispatch:
 
 permissions:

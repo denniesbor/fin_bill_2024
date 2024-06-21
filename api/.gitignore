@@ -9,10 +9,10 @@ build/
 
 # Django
 *.log
-.env
 *.pot
 *.pyc
 local_settings.py
 db.sqlite3
 media/
 static/
+.env

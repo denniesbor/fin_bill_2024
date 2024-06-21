@@ -23,7 +23,7 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      path: "/fin_bill_2024/", // Home page
+      path: "/", // Home page
       element: (
         <div className="p-4">
           <Navbar />
@@ -33,7 +33,7 @@ const App = () => {
       ),
     },
     {
-      path: "/fin_bill_2024/edit-police",
+      path: "/edit-police",
       element: error ? (
         <Error message={error} />
       ) : isMapLoaded ? (
