@@ -3,10 +3,12 @@ import pandas as pd
 import numpy as np
 import geopandas as gpd
 import json
+import re
 from pathlib import Path
+import requests
 
 # Load the shaopefile
-gdf = gpd.read_file("data/regions_2_KEN.shp")
+gdf = gpd.read_file("data/ke_shp/regions_2_KEN.shp")
 
 # Rename the column NAME_1 to county and NAME_2 to constituency
 gdf.rename(columns={"NAME_1": "county", "NAME_2": "constituency"}, inplace=True)
@@ -26,6 +28,47 @@ with file_path.open("r") as f:
 
 # Convert the list of dictionaries to a Pandas DataFrame
 df_mps = pd.DataFrame(mps)
+# %%
+# Downlaod and save imagery
+data_dir = Path("data")
+image_dir = data_dir / "images"
+
+# Create the directory if it doesn't exist
+image_dir.mkdir(parents=True, exist_ok=True)
+
+
+def clean_filename(s):
+    # Replace spaces, periods, and commas with underscores
+    s = re.sub(r"[ \.,]+", "_", s)
+    # Remove any other characters that are not alphanumeric or underscores
+    s = re.sub(r"[^\w_]", "", s)
+    return s
+
+
+# Iterate through the DataFrame and download images
+for index, row in df_mps.iterrows():
+    image_url = row["image"]
+    constituency = clean_filename(row["constituency"])
+    county = clean_filename(row["county"])
+    name = clean_filename(row["name"])
+
+    # Construct the filename
+    filename = f"{constituency}_{county}_{name}.jpg"
+    file_path = image_dir / filename
+
+    # Download and save the image
+    try:
+        response = requests.get(image_url)
+        response.raise_for_status()  # Check if the request was successful
+
+        with open(file_path, "wb") as file:
+            file.write(response.content)
+        print(f"Downloaded {filename}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to download {image_url}: {e}")
+
+# Print confirmation
+print("Image download process completed.")
 
 # %%
 # Normalize the data
