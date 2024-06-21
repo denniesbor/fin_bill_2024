@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import updatedMembers from "./data/updated_members.json";
 
 export const AppContext = createContext();
 
@@ -10,6 +11,24 @@ export const ContextProvider = ({ children }) => {
   const [location, setLocation] = useState([]);
   const [routeMode, setRouteMode] = useState(false);
   const [nearestMarkersInfo, setNearestMarkersInfo] = useState([]);
+  const [mpigs, setMpigs] = useState([]);
+  const [q1Loading, setQ1Loading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Simulate fetching data with a delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setMpigs(updatedMembers);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setQ1Loading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <AppContext.Provider
@@ -28,6 +47,9 @@ export const ContextProvider = ({ children }) => {
         setRouteMode,
         nearestMarkersInfo,
         setNearestMarkersInfo,
+        mpigs,
+        setMpigs,
+        q1Loading,
       }}
     >
       {children}
