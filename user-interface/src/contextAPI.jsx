@@ -20,7 +20,12 @@ export const ContextProvider = ({ children }) => {
   const [fallbackData, setFallbackData] = useState(null);
 
   // configure baseURL
-  const baseURL = "http://localhost:8000";
+  const dev = false;
+  if (dev) {
+    const baseURL = "http://localhost:8000";
+  } else {
+    const baseURL = "http://api:8000";
+  }
 
   useEffect(() => {
     const fetchData = async () => {
