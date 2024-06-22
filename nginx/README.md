@@ -1,0 +1,1 @@
+### If your own a custom domain, copy everything from letsencrypt (/etc/letsencrypt) here

@@ -1,0 +1,50 @@
+
+services:
+  db:
+    image: postgis/postgis
+    environment:
+      POSTGRES_DB: django_postgis
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: mydjangopassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: ./api
+    command: gunicorn myapi.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    volumes:
+      - ./api:/api
+    env_file:
+      - ./api/.env
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/letsencrypt
+      - ./user-interface/dist:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+      - user-interface
+
+  user-interface:
+    image: node:22-slim
+    working_dir: /app
+    volumes:
+      - ./user-interface:/app
+    command: >
+      sh -c "npm install && npm run build"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

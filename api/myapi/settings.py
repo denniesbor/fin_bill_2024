@@ -31,7 +31,7 @@ ALLOWED_HOSTS = eval(os.getenv("ALLOWED_HOSTS"))
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # SESSION_COOKIE_SECURE = True
 
@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.gis',
     "rest_framework",
+    'rest_framework_gis',
     "core",
     "corsheaders",
     "rest_framework.authtoken",
@@ -92,7 +94,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "myapi.wsgi.application"
-
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # session
 SESSION_SAVE_EVERY_REQUEST = True
@@ -100,11 +101,20 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+dev = False
+if dev:
+    host = 'localhost'
+else:
+     host = os.environ.get('POSTGRES_HOST', 'localhost')
+     
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
+        'USER': os.environ.get('POSTGRES_USER', 'mydatabaseuser'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'mypassword'),
+        'HOST': host,
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -131,13 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 

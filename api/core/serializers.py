@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from .models import Marker
+from .models import PoliceLocation
 
-class MarkerSerializer(serializers.ModelSerializer):
+class PoliceLocationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Marker
-        fields = ['id', 'label', 'latitude', 'longitude', 'town', 'created_at', 'updated_at']
-        read_only_fields = ['created_at', 'updated_at']
+        model = PoliceLocation
+        fields = ['label', 'latitude', 'longitude', 'date_created', 'date_updated']

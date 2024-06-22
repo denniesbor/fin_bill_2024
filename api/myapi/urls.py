@@ -1,13 +1,13 @@
-from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from core.views import MarkerViewSet  # Adjust the import to match your directory structure
+from core.views import PoliceLocationViewSet
+from django.contrib import admin
 
 router = DefaultRouter()
-router.register(r'markers', MarkerViewSet)
+router.register(r'police-locations', PoliceLocationViewSet)
+
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path("admin/", admin.site.urls),
-    path("", include(router.urls)),
 ]
