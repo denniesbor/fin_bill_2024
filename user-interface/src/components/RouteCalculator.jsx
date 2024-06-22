@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../contextAPI";
 
 const RouteCalculator = () => {
-  const { mapInstance, location, nearestMarkersInfo, routeMode } =
+  const { mapInstance, location, nearestMarkersInfo, routeMode, townCoords } =
     useContext(AppContext);
   const [directionsService, setDirectionsService] = useState(null);
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
@@ -41,19 +41,19 @@ const RouteCalculator = () => {
 
     const destLocation = new google.maps.LatLng(lat, lng);
 
-    console.log(`Calculating route from ${userLocation} to ${lat} ${lng}`);
+    // console.log(`Calculating route from ${userLocation} to ${lat} ${lng}`);
 
     if (directionsService && directionsRenderer) {
       directionsService.route(
         {
-          origin: userLocation,
+          origin: userLocation ? userLocation : townCoords,
           destination: destLocation,
           travelMode: "WALKING",
         },
         (response, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(response);
-            console.log("Directions rendered successfully.");
+            // console.log("Directions rendered successfully.");
           } else {
             console.error(`Directions request failed due to ${status}`);
           }

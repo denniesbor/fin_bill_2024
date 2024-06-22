@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { AppContext } from "../contextAPI";
+import { AppContext } from "../../contextAPI";
+import NearestMarkerInfo from "./NearestMarkerInfo";
 
 const NearestMarkerCalculator = () => {
-  const { location, markers, setNearestMarkersInfo } = useContext(AppContext);
+  const { location, markers, nearestMarkersInfo, setNearestMarkersInfo } =
+    useContext(AppContext);
 
   useEffect(() => {
     if (location && markers.length) {
@@ -21,12 +23,16 @@ const NearestMarkerCalculator = () => {
         );
         return { distance, position: markerPosition.toString() };
       })
-      .filter(({ distance }) => distance < 4000);
+      .filter(({ distance }) => distance < 2000);
 
     setNearestMarkersInfo(nearbyMarkers);
   };
 
-  return null;
+  return (
+    <div>
+      <NearestMarkerInfo nearestMarkersInfo={nearestMarkersInfo} />
+    </div>
+  );
 };
 
 export default NearestMarkerCalculator;

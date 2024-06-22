@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import Tooltip from "./Tooltip";
 import { AppContext } from "../../contextAPI";
 import VotingPatternTable from "./VotingPatternsTable";
 import { cleanFilename } from "../../utils/helpers";
+import withGoogleMaps from "../../utils/withGoogleMaps"; // Import the HOC
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
 
 const VotingMap = () => {
   const mapContainerRef = useRef(null);
@@ -18,35 +17,14 @@ const VotingMap = () => {
       NO: "red",
       ABSTAIN: "yellow",
       UNKNOWN: "gray",
-      ABSENT: "blue", // Assuming ABSENT is a possible value
+      ABSENT: "blue",
     };
     return voteColors[vote] || voteColors.UNKNOWN;
   };
 
-  useEffect(() => {
-    const loadScript = (url, callback) => {
-      const script = document.createElement("script");
-      script.src = url;
-      script.async = true;
-      script.onload = callback;
-      document.body.appendChild(script);
-    };
-
-    if (typeof google === "undefined") {
-      loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=geometry,drawing,places`,
-        () => {
-          initializeMap();
-        }
-      );
-    } else {
-      initializeMap();
-    }
-  }, []);
-
   const initializeMap = () => {
     const map = new google.maps.Map(mapContainerRef.current, {
-      center: { lat: -1.2921, lng: 36.8219 },  // Center the map to Nairobi, Kenya
+      center: { lat: -1.2921, lng: 36.8219 }, // Center the map to Nairobi, Kenya
       zoom: 7,
     });
     setMapInstance(map);
@@ -114,10 +92,16 @@ const VotingMap = () => {
         .catch((error) => console.error("Error loading GeoJSON data:", error));
     }
   }, [mapInstance, infoWindow]);
+
+  useEffect(() => {
+    initializeMap();
+  }, []);
+
   return (
     <div className="relative">
       <h1 className="text-2xl font-bold mb-6 pt-2 text-center">
-        Geospatial View of the Members of Parliament Voting Patterns - 2024 Financial Bill
+        Geospatial View of the Members of Parliament Voting Patterns - 2024
+        Financial Bill
       </h1>
       <div ref={mapContainerRef} style={{ height: "80vh", width: "100%" }} />
       <div className="flex justify-center mt-4">
@@ -148,4 +132,4 @@ const VotingMap = () => {
   );
 };
 
-export default VotingMap;
+export default withGoogleMaps(VotingMap, GOOGLE_MAPS_API_KEY); // Wrap with HOC

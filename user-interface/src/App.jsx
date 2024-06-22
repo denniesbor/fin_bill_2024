@@ -1,57 +1,67 @@
 import React, { useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useLocation,
+} from "react-router-dom";
 import { ContextProvider } from "./contextAPI";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map";
-import ReportPolicePhoto from "./components/ReportPolicePhoto";
-import Loading from "./components/Loading";
-import Error from "./components/Error";
-import ParliamentSeatChart from "./components/parliament/ParliamentSeatChart";
-import VotingMap from "./components/parliament/VotingMap";
+import ParliamentSeatChart from "./components/HomeParliamentChart/ParliamentSeatChart";
+import VotingMap from "./components/HomeParliamentChart/VotingMap";
+import withGoogleMaps from "./utils/withGoogleMaps";
+
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+const MapWithGoogleMaps = withGoogleMaps(Map, GOOGLE_MAPS_API_KEY);
+const ParliamentVotingMapWithGoogleMaps = withGoogleMaps(
+  VotingMap,
+  GOOGLE_MAPS_API_KEY
+);
+
+const AppRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <div key={location.pathname}>
+      <RouterProvider router={router} />
+    </div>
+  );
+};
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <div className="p-4">
+        <Navbar />
+        <ParliamentSeatChart />
+        <ParliamentVotingMapWithGoogleMaps />
+      </div>
+    ),
+  },
+  {
+    path: "/fin_bill_2024",
+    element: (
+      <div className="p-4">
+        <Navbar />
+        <ParliamentSeatChart />
+        <ParliamentVotingMapWithGoogleMaps />
+      </div>
+    ),
+  },
+  {
+    path: "/edit-police",
+    element: (
+      <div className="p-4">
+        <Navbar />
+        <MapWithGoogleMaps />
+      </div>
+    ),
+  },
+]);
 
 const App = () => {
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleMapLoad = () => {
-    setIsMapLoaded(true);
-  };
-
-  const handleError = (message) => {
-    setError(message);
-  };
-
-  const router = createBrowserRouter([
-    {
-      path: "/", // Home page
-      element: (
-        <div className="p-4">
-          <Navbar />
-          <ParliamentSeatChart />
-          <VotingMap />
-        </div>
-      ),
-    },
-    {
-      path: "/edit-police",
-      element: error ? (
-        <Error message={error} />
-      ) : isMapLoaded ? (
-        <>
-          <Navbar />
-          <Map onLoad={handleMapLoad} onError={handleError} />
-          <ReportPolicePhoto />
-        </>
-      ) : (
-        <>
-          <Navbar />
-          <Map onLoad={handleMapLoad} onError={handleError} />
-          <Loading />
-        </>
-      ),
-    },
-  ]);
-
   return (
     <ContextProvider>
       <RouterProvider router={router} />

@@ -1,24 +1,23 @@
 import React from "react";
 import MapInitializer from "./MapInitializer";
-import MarkerComponent from "./MarkerComponent";
-import NearestMarkerCalculator from "./NearestMarkerCalculator";
-import NearestMarkerInfo from "./NearestMarkerInfo";
+import MarkerComponent from "./PoliceMarkers/MarkerComponent";
+import NearestMarkerCalculator from "./PoliceMarkers/NearestMarkerCalculator";
 import RouteCalculator from "./RouteCalculator";
-import { useContext } from "react";
-import { AppContext } from "../contextAPI";
+import withGoogleMaps from "../utils/withGoogleMaps"; // Import the HOC
+import TownContacts from "./TownContacts";
+
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const Map = ({ onLoad, onError }) => {
-  const { nearestMarkersInfo } = useContext(AppContext);
-
   return (
     <div>
       <MapInitializer onLoad={onLoad} onError={onError} />
       <MarkerComponent />
       <NearestMarkerCalculator />
-      <NearestMarkerInfo nearestMarkersInfo={nearestMarkersInfo} />
       <RouteCalculator />
+      <TownContacts />
     </div>
   );
 };
 
-export default Map;
+export default withGoogleMaps(Map, GOOGLE_MAPS_API_KEY); // Wrap with HOC
