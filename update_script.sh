@@ -6,7 +6,7 @@ git pull origin staging
 
 # Step 2: Bring up Docker containers
 echo "Starting Docker containers..."
-docker-compose up -d
+docker compose up -d
 
 # Step 3: Housekeeping commands
 # Wait for the containers to be up and running
@@ -15,14 +15,14 @@ sleep 10
 
 # Make migrations
 echo "Making migrations..."
-docker-compose run --rm api python manage.py makemigrations
+docker compose run --rm api python manage.py makemigrations
 
 # Apply migrations
 echo "Applying migrations..."
-docker-compose run --rm api python manage.py migrate
+docker compose run --rm api python manage.py migrate
 
 # Collect static files
 echo "Collecting static files..."
-docker-compose run --rm api python manage.py collectstatic --noinput
+docker compose run --rm api python manage.py collectstatic --noinput
 
 echo "Housekeeping complete. The application should now be running."
