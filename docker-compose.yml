@@ -15,7 +15,7 @@ services:
   api:
     build:
       context: ./api
-    command: gunicorn --config /api/gunicorn.conf.py myapi.wsgi:application
+    command: gunicorn myapi.wsgi:application --bind 0.0.0.0:8000 --workers 3
     volumes:
       - ./api:/api
     env_file:
@@ -26,8 +26,8 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/certs:/etc/nginx/letsencrypt
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/letsencrypt
       - ./user-interface/dist:/usr/share/nginx/html
     ports:
       - "80:80"
