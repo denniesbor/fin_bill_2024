@@ -18,6 +18,8 @@ services:
     command: gunicorn myapi.wsgi:application --bind 0.0.0.0:8000 --workers 3
     volumes:
       - ./api:/api
+      - media:/api/media
+      - static:/api/stati
     env_file:
       - ./api/.env
     depends_on:
@@ -48,3 +50,6 @@ services:
 
 volumes:
   postgres_data:
+  media:
+  static:
+
