@@ -160,45 +160,46 @@ const ParliamentSeatChart = () => {
   }, [width, mpigs]);
 
   if (q1Loading) {
-    return <div>Loading...</div>;
+    console.log(mpigs);
+    return;
   }
 
-return (
-  <div className="flex flex-col items-center bg-gray-100">
-    <h1 className="text-2xl font-bold mb-6 text-center">
-      Parliamentary Seat Chart Indicating MPs Voting Patterns - 2024 Financial Bill
-    </h1>
-    <div className="relative">
-      <svg style={{ height: width * 0.6, width: width }} ref={ref}></svg>
-      {tooltipData && (
-        <Tooltip
-          x={tooltipPosition.x}
-          y={tooltipPosition.y}
-          data={tooltipData}
-        />
-      )}
+  return (
+    <div className="flex flex-col items-center bg-gray-100">
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Parliamentary Seat Chart Indicating MPs Voting Patterns - 2024 Financial
+        Bill
+      </h1>
+      <div className="relative">
+        <svg style={{ height: width * 0.6, width: width }} ref={ref}></svg>
+        {tooltipData && (
+          <Tooltip
+            x={tooltipPosition.x}
+            y={tooltipPosition.y}
+            data={tooltipData}
+          />
+        )}
+      </div>
+      <div className="flex justify-center mt-4">
+        <div className="flex items-center mx-2">
+          <div className="w-4 h-4 bg-green-500 mr-2"></div>
+          <span>YES</span>
+        </div>
+        <div className="flex items-center mx-2">
+          <div className="w-4 h-4 bg-red-500 mr-2"></div>
+          <span>NO</span>
+        </div>
+        <div className="flex items-center mx-2">
+          <div className="w-4 h-4 bg-yellow-500 mr-2"></div>
+          <span>ABSENT</span>
+        </div>
+        <div className="flex items-center mx-2">
+          <div className="w-4 h-4 bg-gray-500 mr-2"></div>
+          <span>UNKNOWN</span>
+        </div>
+      </div>
     </div>
-    <div className="flex justify-center mt-4">
-      <div className="flex items-center mx-2">
-        <div className="w-4 h-4 bg-green-500 mr-2"></div>
-        <span>YES</span>
-      </div>
-      <div className="flex items-center mx-2">
-        <div className="w-4 h-4 bg-red-500 mr-2"></div>
-        <span>NO</span>
-      </div>
-      <div className="flex items-center mx-2">
-        <div className="w-4 h-4 bg-yellow-500 mr-2"></div>
-        <span>ABSENT</span>
-      </div>
-      <div className="flex items-center mx-2">
-        <div className="w-4 h-4 bg-gray-500 mr-2"></div>
-        <span>UNKNOWN</span>
-      </div>
-    </div>
-  </div>
-);
-
+  );
 };
 
 export default ParliamentSeatChart;

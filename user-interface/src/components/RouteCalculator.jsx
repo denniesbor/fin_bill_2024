@@ -41,8 +41,6 @@ const RouteCalculator = () => {
 
     const destLocation = new google.maps.LatLng(lat, lng);
 
-    // console.log(`Calculating route from ${userLocation} to ${lat} ${lng}`);
-
     if (directionsService && directionsRenderer) {
       directionsService.route(
         {
@@ -53,7 +51,6 @@ const RouteCalculator = () => {
         (response, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(response);
-            // console.log("Directions rendered successfully.");
           } else {
             console.error(`Directions request failed due to ${status}`);
           }

@@ -6,7 +6,6 @@ const NearestMarkerInfo = () => {
   const { nearestMarkersInfo } = useContext(AppContext);
 
   if (!nearestMarkersInfo || nearestMarkersInfo.length === 0) {
-    console.log("No nearby markers found");
     return null;
   }
 

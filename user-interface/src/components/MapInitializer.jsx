@@ -72,7 +72,6 @@ const MapInitializer = ({ onLoad, onError }) => {
           if (fallbackData) {
             const nairobiCoords = fallbackData.nairobi.gps.map(parseFloat);
             initMap({ lat: nairobiCoords[0], lng: nairobiCoords[1] });
-            console.error(err);
           }
           setLocationDenied(true);
         }

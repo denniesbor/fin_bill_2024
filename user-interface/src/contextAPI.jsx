@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import updatedMembers from "./data/updated_members.json";
 import axios from "axios";
 
@@ -44,8 +44,6 @@ export const ContextProvider = ({ children }) => {
     try {
       const center = location.length > 0 ? location : mapInstance.getCenter();
 
-      console.log("Fetching markers near:", center);
-
       if (!center) return;
       const response = await axios.get(`${baseURL}/api/police-locations/`, {
         params: {
@@ -53,8 +51,6 @@ export const ContextProvider = ({ children }) => {
           longitude: center.lng(),
         },
       });
-
-      console.log("Fetched markers:", response.data);
 
       if (!response.data.length) {
         throw new Error("No police officers found nearby.");
@@ -143,15 +139,24 @@ export const ContextProvider = ({ children }) => {
         }
       );
 
-      console.log("Updated markers:", updatedMarkers);
-      console.log("Deleted markers:", deletedMarkers);
-
       const payload = {
         markers: updatedMarkers,
         deletedMarkers: deletedMarkers,
       };
-      await axios.post(`${baseURL}/api/police-locations/`, payload);
-      setDeletedMarkers([]); // Clear deleted markers after updating
+      const response = await axios.post(
+        `${baseURL}/api/police-locations/`,
+        payload
+      );
+
+      if (response.status === 201) {
+        setDeletedMarkers([]); // Clear deleted markers after updating
+        // set markers to null and make it empty
+        markers.forEach((m) => m.marker.setMap(null));
+        setMarkers([]);
+
+        // initiate the fetchMarkers function to fetch the updated markers
+        fetchMarkers();
+      }
     } catch (error) {
       console.error("Error updating markers:", error);
     }

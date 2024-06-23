@@ -9,7 +9,7 @@ const VotingMap = () => {
   const mapContainerRef = useRef(null);
   const [mapInstance, setMapInstance] = useState(null);
   const [infoWindow, setInfoWindow] = useState(null);
-  const { mpigs } = useContext(AppContext);
+  const { mpigs, q1Loading } = useContext(AppContext);
 
   const colorPicker = (vote) => {
     const voteColors = {
@@ -127,7 +127,7 @@ const VotingMap = () => {
         </div>
       </div>
       <p className="mt-6 text-sm text-gray-600 text-center">From Sam Otieno</p>
-      <VotingPatternTable data={mpigs} />
+      {!q1Loading && <VotingPatternTable data={mpigs} />}
     </div>
   );
 };

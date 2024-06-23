@@ -10,7 +10,7 @@ const NearestMarkerCalculator = () => {
     if (location && markers.length) {
       findNearbyMarkers();
     }
-  }, [location, markers]);
+  }, [location, markers, setNearestMarkersInfo]);
 
   const findNearbyMarkers = () => {
     const userLocation = new google.maps.LatLng(location.lat, location.lng);
@@ -27,7 +27,6 @@ const NearestMarkerCalculator = () => {
 
     setNearestMarkersInfo(nearbyMarkers);
   };
-
   return (
     <div>
       <NearestMarkerInfo nearestMarkersInfo={nearestMarkersInfo} />

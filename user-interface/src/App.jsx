@@ -14,6 +14,7 @@ import withGoogleMaps from "./utils/withGoogleMaps";
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const MapWithGoogleMaps = withGoogleMaps(Map, GOOGLE_MAPS_API_KEY);
+
 const ParliamentVotingMapWithGoogleMaps = withGoogleMaps(
   VotingMap,
   GOOGLE_MAPS_API_KEY
