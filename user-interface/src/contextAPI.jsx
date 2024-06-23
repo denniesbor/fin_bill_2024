@@ -153,8 +153,6 @@ export const ContextProvider = ({ children }) => {
         // set markers to null and make it empty
         markers.forEach((m) => m.marker.setMap(null));
         setMarkers([]);
-
-        // initiate the fetchMarkers function to fetch the updated markers
         fetchMarkers();
       }
     } catch (error) {
