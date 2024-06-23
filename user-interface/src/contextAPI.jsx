@@ -22,7 +22,7 @@ export const ContextProvider = ({ children }) => {
   // configure baseURL
   // configure baseURL
   const dev = false;
-  const baseURL = dev ? "http://localhost:8000" : "https://denniesbor.me";
+  const baseURL = dev ? "http://localhost:8000" : "http://api:8000";
 
   useEffect(() => {
     const fetchData = async () => {
