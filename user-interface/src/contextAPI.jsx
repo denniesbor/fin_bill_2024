@@ -13,16 +13,28 @@ export const ContextProvider = ({ children }) => {
   const [routeMode, setRouteMode] = useState(false);
   const [nearestMarkersInfo, setNearestMarkersInfo] = useState([]);
   const [mpigs, setMpigs] = useState([]);
-  const [q1Loading, setQ1Loading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [townCoords, setTownCoords] = useState(null);
   const [deletedMarkers, setDeletedMarkers] = useState([]);
   const [fallbackData, setFallbackData] = useState(null);
 
   // configure baseURL
-  // configure baseURL
-  const dev = false;
+  const dev = true;
   const baseURL = dev ? "http://localhost:8000" : "https://denniesbor.me";
+
+  const FALLBACK_URL =
+    "https://raw.githubusercontent.com/mowabanga/2022-2027_mps/main/donorpoints.json";
+
+  const fetchFallbackData = async () => {
+    try {
+      const response = await fetch(FALLBACK_URL);
+      const data = await response.json();
+      setFallbackData(data[0]);
+    } catch (error) {
+      console.error("Error fetching fallback data:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,11 +45,12 @@ export const ContextProvider = ({ children }) => {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setQ1Loading(false);
+        setIsLoading(false);
       }
     };
 
     fetchData();
+    fetchFallbackData();
   }, []);
 
   const fetchMarkers = async () => {
@@ -179,7 +192,8 @@ export const ContextProvider = ({ children }) => {
         setNearestMarkersInfo,
         mpigs,
         setMpigs,
-        q1Loading,
+        isLoading,
+        setIsLoading,
         mapLoaded,
         setMapLoaded,
         townCoords,
@@ -190,6 +204,7 @@ export const ContextProvider = ({ children }) => {
         setDeletedMarkers,
         fallbackData,
         setFallbackData,
+        baseURL,
       }}
     >
       {children}

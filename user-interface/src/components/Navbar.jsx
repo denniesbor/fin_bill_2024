@@ -25,6 +25,12 @@ const Navbar = () => {
           Home
         </Link>
         <Link
+          to="/report-police"
+          className="bg-white text-blue-600 px-2 py-1 rounded shadow-md hover:bg-blue-50"
+        >
+          Report Police Presence
+        </Link>
+        <Link
           to="/edit-police"
           className="bg-white text-blue-600 px-2 py-1 rounded shadow-md hover:bg-blue-50"
         >
@@ -32,7 +38,6 @@ const Navbar = () => {
         </Link>
       </div>
       <hr className="w-full border-t border-gray-300 my-2" />
-
     </nav>
   );
 };

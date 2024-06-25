@@ -3,8 +3,6 @@ import { AppContext } from "../contextAPI";
 import withGoogleMaps from "../utils/withGoogleMaps";
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-const FALLBACK_URL =
-  "https://raw.githubusercontent.com/mowabanga/2022-2027_mps/main/donorpoints.json";
 
 const loadGoogleMapsScript = (callback) => {
   if (!window.google) {
@@ -26,7 +24,7 @@ const MapInitializer = ({ onLoad, onError }) => {
     setMapLoaded,
     setTownCoords,
     fallbackData,
-    setFallbackData,
+
   } = useContext(AppContext);
   const [selectedTown, setSelectedTown] = useState("nairobi");
   const [locationDenied, setLocationDenied] = useState(false);
@@ -42,20 +40,8 @@ const MapInitializer = ({ onLoad, onError }) => {
       }
     });
 
-    fetchFallbackData();
-
     if (onLoad) onLoad();
   }, [onLoad, selectedTown]);
-
-  const fetchFallbackData = async () => {
-    try {
-      const response = await fetch(FALLBACK_URL);
-      const data = await response.json();
-      setFallbackData(data[0]);
-    } catch (error) {
-      console.error("Error fetching fallback data:", error);
-    }
-  };
 
   const getLocation = () => {
     if (navigator.geolocation) {

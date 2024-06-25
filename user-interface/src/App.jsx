@@ -10,6 +10,7 @@ import Map from "./components/Map";
 import ParliamentSeatChart from "./components/HomeParliamentChart/ParliamentSeatChart";
 import VotingMap from "./components/HomeParliamentChart/VotingMap";
 import withGoogleMaps from "./utils/withGoogleMaps";
+import FileUpload from "./components/PoliceMarkers/FileUpload";
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
       <div className="p-4">
         <Navbar />
         <MapWithGoogleMaps />
+      </div>
+    ),
+  },
+  {
+    path: "/report-police",
+    element: (
+      <div className="p-4">
+        <FileUpload />
       </div>
     ),
   },
