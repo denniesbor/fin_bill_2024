@@ -1,9 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
-from .models import PoliceLocation
-from .serializers import PoliceLocationSerializer
+from .models import PoliceLocation, MediaFile, City
+from .serializers import PoliceLocationSerializer, MediaFileSerializer
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from datetime import datetime
 
@@ -80,3 +82,38 @@ class PoliceLocationViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+
+class MediaFileViewSet(viewsets.ModelViewSet):
+    queryset = MediaFile.objects.all()
+    serializer_class = MediaFileSerializer
+
+    def create(self, request, *args, **kwargs):
+        payload = request.data
+        
+        print(payload)
+        location = payload.get('location')
+        media_file = request.FILES.get('file')
+
+        if isinstance(location, dict) and 'lat' in location and 'lon' in location:
+            # Location is provided as geo data (latitude and longitude)
+            point = Point(location['lon'], location['lat'], srid=4326)
+            try:
+                city = City.objects.annotate(distance=Distance('location', point)).order_by('distance').first()
+            except ObjectDoesNotExist:
+                city = City.objects.get(name="Nairobi")
+        elif isinstance(location, str):
+            # Location is provided as a town name
+            try:
+                city = City.objects.get(name=location)
+            except City.DoesNotExist:
+                city = City.objects.get(name="Nairobi")
+        else:
+            # Default to Nairobi if location is not valid
+            city = City.objects.get(name="Nairobi")
+
+        media_file_instance = MediaFile(file=media_file, city=city)
+        media_file_instance.save()
+
+        serializer = self.get_serializer(media_file_instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
